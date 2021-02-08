@@ -2148,7 +2148,6 @@ AS_HELP_STRING([--enable-render-metal], [enable the Metal render driver [[defaul
         AC_MSG_CHECKING(for Metal framework)
         have_metal=no
         AC_TRY_COMPILE([
-          #import <Cocoa/Cocoa.h>
           #import <Metal/Metal.h>
           #import <QuartzCore/CAMetalLayer.h>
 
@@ -2564,7 +2563,6 @@ CheckVulkan()
                 dnl Work around that we don't have Objective-C support in autoconf
                 CFLAGS="$CFLAGS -x objective-c"
                 AC_TRY_COMPILE([
-                  #include <Cocoa/Cocoa.h>
                   #include <Metal/Metal.h>
                   #include <QuartzCore/CAMetalLayer.h>
 
@@ -2812,9 +2810,6 @@ AS_HELP_STRING([--enable-joystick-mfi], [include macOS MFI joystick support [[de
           #include <TargetConditionals.h>
           #import <GameController/GameController.h>
         ],[
-          #if MAC_OS_X_VERSION_MIN_REQUIRED < 1080
-          #error GameController framework doesn't work on this configuration
-          #endif
           #if TARGET_CPU_X86
           #error GameController framework doesn't work on this configuration
           #endif
@@ -3978,6 +3973,7 @@ AS_HELP_STRING([--enable-render-d3d], [enable the Direct3D render driver [[defau
             AC_DEFINE(SDL_JOYSTICK_MFI, 1, [ ])
             SOURCES="$SOURCES $srcdir/src/joystick/iphoneos/*.m"
             SOURCES="$SOURCES $srcdir/src/joystick/steam/*.c"
+            CheckJoystickMFI
             have_joystick=yes
         else
             # Need this code for accelerometer as joystick support
@@ -4026,6 +4022,9 @@ AS_HELP_STRING([--enable-render-d3d], [enable the Direct3D render driver [[defau
         AC_DEFINE(SDL_VIDEO_RENDER_OGL_ES, 1, [ ])
         AC_DEFINE(SDL_VIDEO_RENDER_OGL_ES2, 1, [ ])
         SOURCES="$SOURCES $srcdir/src/video/uikit/*.m"
+        SOURCES="$SOURCES $srcdir/src/main/uikit/*.c"
+        EXTRA_CFLAGS="$EXTRA_CFLAGS -fobjc-arc -pipe"
+        EXTRA_CFLAGS="$EXTRA_CFLAGS -DTARGET_OS_IPHONE"
         EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lm -liconv -lobjc"
         EXTRA_LDFLAGS="$EXTRA_LDFLAGS -Wl,-framework,AVFoundation"
         EXTRA_LDFLAGS="$EXTRA_LDFLAGS -Wl,-framework,AudioToolbox"

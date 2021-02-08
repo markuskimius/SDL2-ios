@@ -21760,7 +21760,6 @@ $as_echo_n "checking for Metal framework... " >&6; }
         cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
-          #import <Cocoa/Cocoa.h>
           #import <Metal/Metal.h>
           #import <QuartzCore/CAMetalLayer.h>
 
@@ -22664,7 +22663,6 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
                 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
-                  #include <Cocoa/Cocoa.h>
                   #include <Metal/Metal.h>
                   #include <QuartzCore/CAMetalLayer.h>
 
@@ -23207,9 +23205,6 @@ int
 main ()
 {
 
-          #if MAC_OS_X_VERSION_MIN_REQUIRED < 1080
-          #error GameController framework doesn't work on this configuration
-          #endif
           #if TARGET_CPU_X86
           #error GameController framework doesn't work on this configuration
           #endif
@@ -25319,6 +25314,7 @@ $as_echo "#define SDL_JOYSTICK_MFI 1" >>confdefs.h
 
             SOURCES="$SOURCES $srcdir/src/joystick/iphoneos/*.m"
             SOURCES="$SOURCES $srcdir/src/joystick/steam/*.c"
+            CheckJoystickMFI
             have_joystick=yes
         else
             # Need this code for accelerometer as joystick support
@@ -25385,6 +25381,9 @@ $as_echo "#define SDL_VIDEO_RENDER_OGL_ES 1" >>confdefs.h
 $as_echo "#define SDL_VIDEO_RENDER_OGL_ES2 1" >>confdefs.h
 
         SOURCES="$SOURCES $srcdir/src/video/uikit/*.m"
+        SOURCES="$SOURCES $srcdir/src/main/uikit/*.c"
+        EXTRA_CFLAGS="$EXTRA_CFLAGS -fobjc-arc -pipe"
+        EXTRA_CFLAGS="$EXTRA_CFLAGS -DTARGET_OS_IPHONE"
         EXTRA_LDFLAGS="$EXTRA_LDFLAGS -lm -liconv -lobjc"
         EXTRA_LDFLAGS="$EXTRA_LDFLAGS -Wl,-framework,AVFoundation"
         EXTRA_LDFLAGS="$EXTRA_LDFLAGS -Wl,-framework,AudioToolbox"
