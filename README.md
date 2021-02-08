@@ -7,7 +7,7 @@ Currently based on SDL2-2.0.14
 
 ## Doesn't SDL2 support iOS already?
 
-Yes, but it does not produce `sdl2-config` and `pkg-config` files with which to
+Yes, but it does not produce `sdl2-config` and `pkg-config` file with which to
 compile SDL applications via `./configure && make && make install`.
 
 
@@ -16,11 +16,10 @@ compile SDL applications via `./configure && make && make install`.
 You can run `build-scripts/iosbuild.sh` that comes with the vanilla SDL2
 install (which is broken without the iOS patches in this repository), but the
 paths produced by `sdl2-config` and `pkg-config` are incorrect.  Change
-`arm64-ios` to `universal` in `sdl2-config` and `sdl2.pc` to fix this issue.
-They are created in `ios-build` after running `iosbuild.sh`.
+`arm64-ios` to `universal` in `sdl2-config` and `sdl2.pc` to fix them
+in `ios-build`.
 
-One of the issues with `iosbuild.sh` is that its installation directory is
-fixed to `ios-build`.  For more flexibility, install [ios-helper] then run:
+For a more straight forward installation, install [ios-helper] first, then run:
 
 ```sh
 $ ios -p /usr/local/ios configure --disable-video-metal --disable-render-metal --disable-video-vulkan && make && sudo make install
